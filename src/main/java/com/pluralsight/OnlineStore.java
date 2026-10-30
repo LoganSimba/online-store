@@ -1,5 +1,9 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,9 +12,41 @@ public class OnlineStore {
 
         ArrayList<Product> products = new ArrayList<>();
 
+        loadProductInInventory("products.csv",products);
+        System.out.println(products.toString());
+
 
 
     }
+    // load product from csv file and add it to the arraylist
+    public static void loadProductInInventory(String file, ArrayList<Product> products){
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+
+            String line;
+            reader.readLine();
+            while((line = reader.readLine()) != null){
+                String[] parts = line.split("\\|");
+                String productCode = parts[0];
+                String productName = parts[1];
+                double price = Double.parseDouble(parts[2]);
+                String department = parts[3];
+
+                products.add(new Product(productCode, productName, price, department));
+            }
+            reader.close();
+
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
+
+
+    }
+
+
+
     //create a method that prints all available products
     public static void viewAllProducts(ArrayList<Product> products){
         //iterate through the products and print them
