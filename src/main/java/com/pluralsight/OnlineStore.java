@@ -18,9 +18,10 @@ public class OnlineStore {
         System.out.println("--------");
         // call the search product by name
       //  searchProductName(products,scanner);
-        addProduct(scanner,products);
+        //addProduct(scanner,products);
         //call the method to view all products
-        viewAllProducts(products);
+        //viewAllProducts(products);
+        searchByDepartment(products, scanner);
 
 
 
@@ -80,6 +81,29 @@ public class OnlineStore {
             System.out.println("No match found for: " + productName);
         }
         }
+
+
+    //added a method to search by department name
+    public static void searchByDepartment(ArrayList<Product> products, Scanner scanner) {
+        //prompt user for the department name and store it in a variable
+        System.out.print("Search department: ");
+        String department = scanner.nextLine().trim();
+
+        //boolean to keep track of if we found a match in the department or no
+        boolean found = false;
+        for (Product product : products) {
+            //if statement to check if the user input matches the departments
+            if (product.getDepartment().equalsIgnoreCase(department)) {
+                System.out.println(product);
+                found = true;
+            }
+        }//print a message if no match found
+        if (!found) {
+            System.out.println("No products found in: " + department);
+        }
+    }
+
+
 
         // add method to add product a product
         public static void addProduct(Scanner scanner, ArrayList<Product> products){
