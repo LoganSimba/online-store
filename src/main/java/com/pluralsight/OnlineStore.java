@@ -12,6 +12,8 @@ public class OnlineStore {
         Scanner scanner = new Scanner(System.in);
 
         ArrayList<Product> products = new ArrayList<>();
+        ArrayList<Product> cart = new ArrayList<>();
+
         //initialize method and pass it a csv file as the parameter
         loadProductInInventory("products.csv",products);
 
@@ -22,8 +24,9 @@ public class OnlineStore {
         //call the method to view all products
         //viewAllProducts(products);
        // searchByDepartment(products, scanner);
-        searchByPriceRange(products, scanner);
-
+       //searchByPriceRange(products, scanner);
+        addToCart(products, cart, scanner);
+        System.out.println(cart.toString());
 
     }
     // load product from csv file and add it to the arraylist
@@ -152,5 +155,22 @@ public class OnlineStore {
             System.out.println("product added successfully");
 
         }
+
+        public static void addToCart(ArrayList<Product> products, ArrayList<Product> cart, Scanner scanner){
+
+            System.out.print("Enter the product code to add to cart: ");
+            String code = scanner.nextLine().trim();
+
+            for(Product product : products){
+                if(product.getProductCode().equalsIgnoreCase(code)){
+                    cart.add(new Product(product.getProductCode(), product.getProductName(), product.getPrice(), product.getDepartment()));
+                    System.out.println(product.getProductName() + " added is added to cart");
+                    return;
+                }
+            }
+
+                System.out.println("Product not found with the code: " + code);
+    }
+
 }
 
