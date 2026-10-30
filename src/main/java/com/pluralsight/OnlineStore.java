@@ -21,8 +21,8 @@ public class OnlineStore {
         //addProduct(scanner,products);
         //call the method to view all products
         //viewAllProducts(products);
-        searchByDepartment(products, scanner);
-
+       // searchByDepartment(products, scanner);
+        searchByPriceRange(products, scanner);
 
 
     }
@@ -102,6 +102,30 @@ public class OnlineStore {
             System.out.println("No products found in: " + department);
         }
     }
+    // add a method to seach the price range
+    public static void searchByPriceRange(ArrayList<Product> products, Scanner scanner) {
+        //prompt user for the minimun price
+        System.out.print("Minimum price: ");
+        double min = scanner.nextDouble();
+
+        //prompt user for the maximum price
+        System.out.print("Maximum price: ");
+        double max = scanner.nextDouble();
+        scanner.nextLine(); // clears the leftover newline
+        //boolean to keep track of weather we found a match in the price range
+        boolean found = false;
+        for (Product product : products) {
+            //if statement to compare the users price range with the product price
+            if (product.getPrice() >= min && product.getPrice() <= max) {
+                System.out.println(product);
+                found = true;
+            }
+        }//if not found print a message
+        if (!found) {
+            System.out.println("No products between $" + min + " and $" + max);
+        }
+    }
+
 
 
 
