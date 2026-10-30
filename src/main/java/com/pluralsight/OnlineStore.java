@@ -27,6 +27,7 @@ public class OnlineStore {
        //searchByPriceRange(products, scanner);
         addToCart(products, cart, scanner);
         System.out.println(cart.toString());
+        removeProductFromCart(cart, scanner);
 
     }
     // load product from csv file and add it to the arraylist
@@ -155,21 +156,41 @@ public class OnlineStore {
             System.out.println("product added successfully");
 
         }
-
+        //added a method that adds products to cart
         public static void addToCart(ArrayList<Product> products, ArrayList<Product> cart, Scanner scanner){
-
+            // ask the user for the code to add to the cart and store it
             System.out.print("Enter the product code to add to cart: ");
             String code = scanner.nextLine().trim();
 
+            //iterate through the products
             for(Product product : products){
+                //check if the user input code matches a code in the product list, if so add it the cart and return
                 if(product.getProductCode().equalsIgnoreCase(code)){
                     cart.add(new Product(product.getProductCode(), product.getProductName(), product.getPrice(), product.getDepartment()));
                     System.out.println(product.getProductName() + " added is added to cart");
                     return;
                 }
             }
-
+                // print message to the user if no match found for the code he input
                 System.out.println("Product not found with the code: " + code);
+    }
+
+    // added a method to remove products from the code
+    public static void removeProductFromCart(  ArrayList<Product> cart, Scanner scanner){
+        // ask user for the code for the product they want to remove and store it
+        System.out.println("Enter the code for the product you want to remove: ");
+        String code = scanner.nextLine().trim();
+
+        // iterate through the cart
+        for(Product product : cart){
+            //check if the product code in the cart matches the code the user input, if so remove it and return
+            if(product.getProductCode().equalsIgnoreCase(code)){
+                cart.remove(product);
+                System.out.println(product.getProductCode() + ", " + product.getProductName() + " has been removed");
+                return;
+            }
+        }//if no match print a messade
+        System.out.println("Could not find product with " + code + " in the cart");
     }
 
 }
