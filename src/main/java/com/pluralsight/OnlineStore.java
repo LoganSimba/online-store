@@ -116,6 +116,7 @@ public class OnlineStore {
         System.out.print("Maximum price: ");
         double max = scanner.nextDouble();
         scanner.nextLine(); // clears the leftover newline
+
         //boolean to keep track of weather we found a match in the price range
         boolean found = false;
         for (Product product : products) {
@@ -152,6 +153,7 @@ public class OnlineStore {
             System.out.print("Department: ");
             String department = scanner.nextLine().trim();
 
+            //add user inputs in the product class and print a message
             products.add(new Product(productCode, productName, price, department));
             System.out.println("product added successfully");
 
@@ -167,7 +169,7 @@ public class OnlineStore {
                 //check if the user input code matches a code in the product list, if so add it the cart and return
                 if(product.getProductCode().equalsIgnoreCase(code)){
                     cart.add(new Product(product.getProductCode(), product.getProductName(), product.getPrice(), product.getDepartment()));
-                    System.out.println(product.getProductName() + " added is added to cart");
+                    System.out.println(product.getProductName() + " is added to cart");
                     return;
                 }
             }
@@ -192,6 +194,44 @@ public class OnlineStore {
         }//if no match print a messade
         System.out.println("Could not find product with " + code + " in the cart");
     }
+    // method to checkout from the cart
+    public static void checkOut(ArrayList<Product>cart, Scanner scanner){
+        //initialize totalprice to get total from cart products
+        double totalPrice = 0;
+        //if the cart is empty, we return
+        if(cart.isEmpty()){
+            System.out.println("Cart is empty!");
+            return;
+        }
+        // iterate through the cart and increment the price to calculate total
+        for(Product product : cart){
+            System.out.println(product.getProductName() + " " + product.getPrice());
+            totalPrice += product.getPrice();
+        }//fomat to display total
+        System.out.printf("TOTAL: %.2f\n" + totalPrice);
+        //print a line for cleanr UI
+        System.out.println();
+
+        //boolean to ckech if the amount is greater
+        boolean notEnoughCash = true;
+        while(notEnoughCash){
+            //ask user for how much they will pay
+            System.out.println("Enter cash your paying: ");
+            double customerCash = scanner.nextDouble();
+
+            //check if what the customer pays is less than the total, if so print a message
+            if(customerCash < totalPrice){
+                System.out.printf("Not enough cash, you need %2.f more to complete total: " + (totalPrice - customerCash) );
+            }else {
+                notEnoughCash = false;
+            }
+
+        }
+
+
+    }
+
+
 
 }
 
