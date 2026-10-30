@@ -9,11 +9,18 @@ import java.util.Scanner;
 
 public class OnlineStore {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
         ArrayList<Product> products = new ArrayList<>();
-
+        //initialize method and pass it a csv file as the parameter
         loadProductInInventory("products.csv",products);
-        System.out.println(products.toString());
+
+        System.out.println("--------");
+        // call the search product by name
+      //  searchProductName(products,scanner);
+        addProduct(scanner,products);
+        //call the method to view all products
+        viewAllProducts(products);
 
 
 
@@ -60,15 +67,42 @@ public class OnlineStore {
         //ask user for the name they want to search and store it in a scanner variable
         System.out.print("Search product(Name): ");
         String productName = scanner.nextLine().trim();
+        boolean found = false;
         //iterate thrugh the list and check if there is a similar name
         for(Product product : products){
             if(product.getProductName().equalsIgnoreCase(productName)){
                 System.out.println(product.toString());
+                found = true;
             }
-            else{
-                System.out.println("No march founf for: " + productName);
+
             }
+        if(!found){
+            System.out.println("No match found for: " + productName);
+        }
         }
 
-    }
+        // add method to add product a product
+        public static void addProduct(Scanner scanner, ArrayList<Product> products){
+            //promot user for the code and store it
+            System.out.print("Product code: ");
+            String productCode = scanner.nextLine().trim();
+
+            //promot user for the name and store it
+            System.out.print("Product Name: ");
+            String productName = scanner.nextLine().trim();
+
+            //promot user for the price and store it then eat a line in the buffer
+            System.out.print("Price: ");
+            double price = scanner.nextDouble();
+            scanner.nextLine();
+
+            // prompt user for the department and store it
+            System.out.print("Department: ");
+            String department = scanner.nextLine().trim();
+
+            products.add(new Product(productCode, productName, price, department));
+            System.out.println("product added successfully");
+
+        }
 }
+
