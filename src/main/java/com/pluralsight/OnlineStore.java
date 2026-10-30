@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.sql.SQLOutput;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -222,15 +224,33 @@ public class OnlineStore {
             //check if what the customer pays is less than the total, if so print a message
             if(customerCash < totalPrice){
                 System.out.printf("Not enough cash, you need %2.f more to complete total: " + (totalPrice - customerCash) );
-            }else {
-                notEnoughCash = false;
             }
+            // if customer cash is enough then turn boolean to false so the loops stops
+            notEnoughCash = false;
+
 
         }
-
-
     }
+    //added a print receipt
+    public static void printReceipt(ArrayList<Product> cart, double totalPrice, double amountPaid, double change) {
+        // added a date time formater and a localDatetime to get the time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
+        LocalDateTime orderDate = LocalDateTime.now();
 
+        //print receipts freindly UI
+        System.out.println("\n========== SALES RECEIPT ==========");
+        System.out.println("Order Date: " + orderDate.format(formatter));
+        System.out.println("-----------------------------------");
+        //iterate through the cart and print product name and price in a friendly UI
+        for (Product product : cart) {
+            System.out.printf("%-25s $%.2f%n", product.getProductName(), product.getPrice());
+        }
+        System.out.println("-----------------------------------");
+        System.out.printf("%-25s $%.2f%n", "Sales Total:", totalPrice);
+        System.out.printf("%-25s $%.2f%n", "Amount Paid:", amountPaid);
+        System.out.printf("%-25s $%.2f%n", "Change Given:", change);
+        System.out.println("===================================");
+    }
 
 
 }
