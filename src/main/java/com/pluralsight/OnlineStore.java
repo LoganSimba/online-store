@@ -11,25 +11,17 @@ import java.util.Scanner;
 
 public class OnlineStore {
     public static void main(String[] args) {
+        //initiate scanner
         Scanner scanner = new Scanner(System.in);
-
+        //initiate productarraylist
         ArrayList<Product> products = new ArrayList<>();
+        //initialize cart arraylist
         ArrayList<Product> cart = new ArrayList<>();
 
-        //initialize method and pass it a csv file as the parameter
-        loadProductInInventory("products.csv",products);
-
-        System.out.println("--------");
-        // call the search product by name
-      //  searchProductName(products,scanner);
-        //addProduct(scanner,products);
-        //call the method to view all products
-        //viewAllProducts(products);
-       // searchByDepartment(products, scanner);
-       //searchByPriceRange(products, scanner);
-        addToCart(products, cart, scanner);
-        System.out.println(cart.toString());
-        removeProductFromCart(cart, scanner);
+        //call method to laod products in our arraylist
+        loadProductInInventory("products.csv", products);
+        //call the method to run the application
+        runApplication(products, cart, scanner);
 
     }
     // load product from csv file and add it to the arraylist
@@ -54,9 +46,6 @@ public class OnlineStore {
         catch(Exception e){
             System.out.println(e.getMessage());
         }
-
-
-
     }
 
 
@@ -133,9 +122,6 @@ public class OnlineStore {
         }
     }
 
-
-
-
         // add method to add product a product
         public static void addProduct(Scanner scanner, ArrayList<Product> products){
             //promot user for the code and store it
@@ -210,16 +196,18 @@ public class OnlineStore {
             System.out.println(product.getProductName() + " " + product.getPrice());
             totalPrice += product.getPrice();
         }//fomat to display total
-        System.out.printf("TOTAL: %.2f\n" + totalPrice);
+        System.out.printf("TOTAL: $ %.2f%n" , totalPrice);
         //print a line for cleanr UI
         System.out.println();
 
+        //create
+        double customerCash = 0;
         //boolean to ckech if the amount is greater
         boolean notEnoughCash = true;
         while(notEnoughCash){
             //ask user for how much they will pay
             System.out.println("Enter cash your paying: ");
-            double customerCash = scanner.nextDouble();
+            customerCash = scanner.nextDouble();
 
             //check if what the customer pays is less than the total, if so print a message
             if(customerCash < totalPrice){
@@ -228,11 +216,13 @@ public class OnlineStore {
             // if customer cash is enough then turn boolean to false so the loops stops
             notEnoughCash = false;
 
+            double change = customerCash - totalPrice;
+             printReceipt(cart,totalPrice , customerCash,change);
 
         }
     }
     //added a print receipt
-    public static void printReceipt(ArrayList<Product> cart, double totalPrice, double amountPaid, double change) {
+    public static void printReceipt(ArrayList<Product> cart, double totalPrice, double customerCash, double change) {
         // added a date time formater and a localDatetime to get the time
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
         LocalDateTime orderDate = LocalDateTime.now();
@@ -247,9 +237,46 @@ public class OnlineStore {
         }
         System.out.println("-----------------------------------");
         System.out.printf("%-25s $%.2f%n", "Sales Total:", totalPrice);
-        System.out.printf("%-25s $%.2f%n", "Amount Paid:", amountPaid);
+        System.out.printf("%-25s $%.2f%n", "Amount Paid:", customerCash);
         System.out.printf("%-25s $%.2f%n", "Change Given:", change);
         System.out.println("===================================");
+    }
+    //method that runs application
+    public static void runApplication(ArrayList<Product> products, ArrayList<Product> cart, Scanner scanner) {
+        boolean running = true;
+        while (running) {
+            System.out.println("\n========== STORE MENU ==========");
+            System.out.println("1) View all products");
+            System.out.println("2) Search by name");
+            System.out.println("3) Search by department");
+            System.out.println("4) Search by price range");
+            System.out.println("5) Add a new product");
+            System.out.println("6) Add product to cart");
+            System.out.println("7) Remove product from cart");
+            System.out.println("8) View cart");
+            System.out.println("9) Checkout");
+            System.out.println("0) Exit");
+            System.out.print("Choose an option: ");
+            String choice = scanner.nextLine().trim();
+
+            //switch statements to call methods based on the user choice
+            switch (choice) {
+                case "1" -> viewAllProducts(products);
+                case "2" -> searchProductName(products, scanner);
+                case "3" -> searchByDepartment(products, scanner);
+                case "4" -> searchByPriceRange(products, scanner);
+                case "5" -> addProduct(scanner, products);
+                case "6" -> addToCart(products, cart, scanner);
+                case "7" -> removeProductFromCart(cart, scanner);
+                case "8" -> viewAllProducts(cart);
+                case "9" -> checkOut(cart, scanner);
+                case "0" -> {
+                    System.out.println("Goodbye!");
+                    running = false;
+                }//if user inputs a an invalid number to call the method, print a message
+                default -> System.out.println("Invalid option, try again.");
+            }
+        }
     }
 
 
